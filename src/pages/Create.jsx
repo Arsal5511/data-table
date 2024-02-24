@@ -9,33 +9,40 @@ function Create() {
     method: "",
     rating: "",
   });
-console.log(data)
+// console.log(data)
 const [formError, setFormError] = useState(null);
-const {title, method, rating} = data
 
 const handleSubmit =(e) =>{
   e.preventDefault();
    
-  if(!title || !method || !rating){
+  if(!data.title || !data.method || !data.rating){
     setFormError("All fields are required")
     return
   }
-  const {smoothie, error }= Supabase
+
+  Supabase
   .from('smoothies')
   .insert([
-      {title, method, rating}
+      {
+        title: data.title,
+        method: data.method,
+        rating: data.rating,
+      }
     ])
 
+  .then(({data: newEntry , error}) => {
     if(error){
       console.log(error)
       setFormError('Error creating smoothie')
     }
-    if(smoothie){
+    else{
       setFormError(null)
-      console.log(smoothie)
-      navigate('/')
+      console.log(newEntry)
+      navigate('/')}
+  
+  });
+    
 
-    }
 }
 
   return (
