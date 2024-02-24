@@ -9,7 +9,6 @@ function Create() {
     method: "",
     rating: "",
   });
-// console.log(data)
 const [formError, setFormError] = useState(null);
 
 const handleSubmit =(e) =>{
@@ -32,12 +31,10 @@ const handleSubmit =(e) =>{
 
   .then(({data: newEntry , error}) => {
     if(error){
-      console.log(error)
       setFormError('Error creating smoothie')
     }
     else{
       setFormError(null)
-      console.log(newEntry)
       navigate('/')}
   
   });
