@@ -13,7 +13,6 @@ function Home() {
         .from('smoothies')
         .select()
 
-        console.log(data)
         if(error){
           setFetchError('Could not fetch the smoothies')
           setSmoothies(null)
