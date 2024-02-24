@@ -1,9 +1,10 @@
 import React from 'react'
-
+import { useParams } from 'react-router-dom'
 function Update() {
+  const { id} = useParams();
   return (
     <div className='page update'>
-        <h2>Update</h2>
+      update - {id}
     </div>
   )
 }
