@@ -27,6 +27,12 @@ function Home() {
     fetchSmoothies();
   }, [])
 
+  const handleDelete = (id) =>{
+    setSmoothies(prevSmoothie => {
+      return prevSmoothie.filter(smoothie => smoothie.id !== id)
+    })
+
+  }
 
   return (
     <div className='page home'>
@@ -35,7 +41,7 @@ function Home() {
         // order by buttons
         <div className="smoothie-grid">
           {smoothies.map(smoothie => (
-            <SmoothieCard key={smoothie.id} smoothie={smoothie} />
+            <SmoothieCard key={smoothie.id} smoothie={smoothie} onDelete={handleDelete} />
           ))}
         </div>
       )}

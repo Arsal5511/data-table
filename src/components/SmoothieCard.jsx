@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import supabase from '../config/SupabaseClient'
 
-function SmoothieCard( {smoothie}) {
+function SmoothieCard( {smoothie, onDelete}) {
 
 
   const handleDelete = async () => {
@@ -16,7 +16,9 @@ function SmoothieCard( {smoothie}) {
       }
       else {
         console.log(data)
-        window.location.reload()
+        onDelete(smoothie.id);
+        //you can reaload page without using any function
+        // window.location.reload()
       }
 
 
