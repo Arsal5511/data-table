@@ -5,50 +5,68 @@ import { useParams, useNavigate } from 'react-router-dom'
 function Update() {
   const { id } = useParams();
   const navigate = useNavigate()
+  const [formError, setFormError] = useState(null);
   const [smoothie, setSmoothie] = useState({
     title: '',
     method: '',
     rating: '',
   })
-  console.log(smoothie)
 
   useEffect( () => {
     const fetchSmoothies = async () => {
-      try{
      const {data, error}  = await Supabase
         .from('smoothies')
       .select()
       .eq('id', id)
       .single()
         if(error){
-          console.log(error)
-          navigate('/' + { replace: true })
+          navigate('/' , { replace: true })
         }
         if(data){
           setSmoothie(data)
-          console.log(data)
-        }}catch (error){
-          navigate('/', { replace: true });
-          }
+        }
     }
     fetchSmoothies();
   }, [id, navigate])
 
+
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!smoothie.title || !smoothie.method || !smoothie.rating) {
+      setFormError("All fields are required");
+      return;
+    }
+
+    const {  error } = await Supabase
+      .from('smoothies')
+      .update({ title: smoothie.title, method: smoothie.method, rating: smoothie.rating })
+      .eq('id', id);
+
+    if (error) {
+      setFormError('Error updating smoothie');
+    } else {
+      setFormError(null);
+      navigate('/');
+    }
+  };
+
   return (
     <div className='page update'>
-      <form>
+      <form onSubmit={handleSubmit} >
         <label htmlFor="title">Title:</label>
         <input
           type="text"
           id="title"
-          value={setSmoothie.title}
+          value={smoothie.title}
           onChange={(e) => setSmoothie((prevData) => ({...prevData, title:e.target.value}))}
         />
 
         <label htmlFor="method">Method:</label>
         <textarea
           id="method"
-          value={setSmoothie.method}
+          value={smoothie.method}
           onChange={(e) => setSmoothie((prevData) => ({...prevData, method:e.target.value}))}
         />
 
@@ -56,12 +74,12 @@ function Update() {
         <input
           type="number"
           id="rating"
-          value={setSmoothie.rating}
+          value={smoothie.rating}
           onChange={(e) => setSmoothie((prevData) => ({...prevData, rating: e.target.value}))}
         />
 
         <button>Update Smoothie Recipe</button>
-
+        {formError && <p className="error">{formError}</p>}
       </form>
     </div>
   )
