@@ -24,3 +24,6 @@ function App() {
 }
 
 export default App;
+
+
+// Learnd Policies and access in supabase tables RLS 
